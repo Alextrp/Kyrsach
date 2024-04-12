@@ -1,4 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using DAL;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+//builder.Services.AddDbContext<DAL.AppContext>(options => options.)
+builder.Services.AddDbContext<DAL.AppContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

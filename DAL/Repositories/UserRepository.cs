@@ -46,6 +46,7 @@ namespace DAL.Repositories
 
         public void Update(User entity)
         {
+           
             var existingUser = _context.Users.FirstOrDefault(t => t.Id == entity.Id);
             if (existingUser != null)
             {

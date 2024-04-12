@@ -25,7 +25,7 @@ namespace DAL.Entities
         [ForeignKey("VehicleTypeID")]
         public VehicleType VehicleType { get; set; }
 
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         [ForeignKey("UserID")]
         public User Driver { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace DAL.Entities
 {
     public class Cargo
     {
+        [Key]
         public int CargoID { get; set; }
 
         public string Description { get; set; }
@@ -21,7 +23,7 @@ namespace DAL.Entities
         [ForeignKey("CargoTypeID")]
         public CargoType CargoType { get; set; }
 
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         [ForeignKey("UserID")]
         public User Owner { get; set; }
     }

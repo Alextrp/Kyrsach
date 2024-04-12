@@ -13,7 +13,7 @@ namespace DAL.Entities
         [Key]
         public int SessionId { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
         public DateTime SessionStart { get; set; }

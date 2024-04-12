@@ -18,7 +18,7 @@ namespace DAL.Entities
         [ForeignKey("OrderID")]
         public Order Order { get; set; }
 
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         [ForeignKey("UserID")]
         public User Customer { get; set; }
 

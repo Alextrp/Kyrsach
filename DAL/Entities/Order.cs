@@ -29,7 +29,7 @@ namespace DAL.Entities
         [ForeignKey("StatusID")]
         public OrderStatus Status { get; set; }
 
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         [ForeignKey("UserID")]
         public User Driver { get; set; }
     }
