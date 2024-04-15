@@ -22,7 +22,7 @@ namespace DAL.Repositories
             return _context.Set<Order>().ToList();
         }
 
-        public Order GetById(int id)
+        public Order GetById(object id)
         {
             return _context.Set<Order>().Find(id);
         }
@@ -33,7 +33,7 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(object id)
         {
             var entity = _context.Set<Order>().Find(id);
             if (entity != null)

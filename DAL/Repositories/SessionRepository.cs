@@ -22,7 +22,7 @@ namespace DAL.Repositories
             return _context.Set<Session>().ToList();
         }
 
-        public Session GetById(int id)
+        public Session GetById(object id)
         {
             return _context.Set<Session>().Find(id);
         }
@@ -33,7 +33,7 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(object id)
         {
             var entity = _context.Set<Session>().Find(id);
             if (entity != null)

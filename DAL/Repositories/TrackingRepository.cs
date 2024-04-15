@@ -21,7 +21,7 @@ namespace DAL.Repositories
             return _context.Set<Tracking>().ToList();
         }
 
-        public Tracking GetById(int id)
+        public Tracking GetById(object id)
         {
             return _context.Set<Tracking>().Find(id);
         }
@@ -32,7 +32,7 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(object id)
         {
             var entity = _context.Set<Tracking>().Find(id);
             if (entity != null)

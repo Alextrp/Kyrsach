@@ -22,7 +22,7 @@ namespace DAL.Repositories
             return _context.Set<Review>().ToList();
         }
 
-        public Review GetById(int id)
+        public Review GetById(object id)
         {
             return _context.Set<Review>().Find(id);
         }
@@ -33,7 +33,7 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(object id)
         {
             var entity = _context.Set<Review>().Find(id);
             if (entity != null)

@@ -22,7 +22,7 @@ namespace DAL.Repositories
             return _context.Set<CargoType>().ToList();
         }
 
-        public CargoType GetById(int id)
+        public CargoType GetById(object id)
         {
             return _context.Set<CargoType>().Find(id);
         }
@@ -33,7 +33,7 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(object id)
         {
             var entity = _context.Set<CargoType>().Find(id);
             if (entity != null)

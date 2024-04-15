@@ -26,20 +26,28 @@ namespace DAL
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Tracking> Trackings { get; set; }
         public DbSet<User> Users { get; set; }
-        
+
+        public DbSet<Client> Client { get; set; }
+        public DbSet<Administrator> Administrators { get; set; }
+        public DbSet<Manager> Managers { get; set; }
+
         public AppContext(DbContextOptions<AppContext> options)
             : base(options)
         {
             Database.EnsureCreated();
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=TransportFirm;Trusted_Connection=True;");
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=TransportFirm;Trusted_Connection=True;");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Client>().HasNoKey().ToView("Clients");
+            modelBuilder.Entity<Administrator>().HasNoKey().ToView("Administrators");
+            modelBuilder.Entity<Manager>().HasNoKey().ToView("Managers");
 
             modelBuilder.Entity<User>().HasKey(u => u.Id);
 
@@ -155,5 +163,38 @@ namespace DAL
 
             // Здесь можно добавить дополнительные настройки моделей
         }
+    }
+
+    public class Client
+    {
+        [Key]
+        public string UserId { get; set; }
+
+        // Дополнительные свойства для зрителей могут быть добавлены здесь
+
+        [ForeignKey("UserId")]
+        public User Users { get; set; }
+    }
+
+    public class Administrator
+    {
+        [Key]
+        public string UserId { get; set; }
+
+        // Дополнительные свойства для курьеров могут быть добавлены здесь
+
+        [ForeignKey("UserId")]
+        public User Users { get; set; }
+    }
+
+    public class Manager
+    {
+        [Key]
+        public string UserId { get; set; }
+
+        // Дополнительные свойства для менеджеров могут быть добавлены здесь
+
+        [ForeignKey("UserId")]
+        public User Users { get; set; }
     }
 }

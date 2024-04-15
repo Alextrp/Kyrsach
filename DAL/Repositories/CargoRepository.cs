@@ -26,12 +26,12 @@ namespace DAL.Repositories
                            .ToList();
         }
 
-        public Cargo GetById(int id)
+        public Cargo GetById(object id)
         {
             return _context.Set<Cargo>()
                            .Include(c => c.CargoType)
                            .Include(c => c.Owner)
-                           .FirstOrDefault(c => c.CargoID == id);
+                           .FirstOrDefault(c => c.CargoID.Equals(id));
         }
 
         public void Add(Cargo entity)
@@ -40,7 +40,7 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(object id)
         {
             var entity = _context.Set<Cargo>().Find(id);
             if (entity != null)

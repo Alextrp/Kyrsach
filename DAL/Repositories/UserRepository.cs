@@ -23,10 +23,11 @@ namespace DAL.Repositories
             return  _context.Users.ToList();
         }
 
-        public User GetById(int id)
+        public User GetById(object id)
         {
             return _context.Set<User>().Find(id);
         }
+
 
         public void Add(User entity)
         {
@@ -34,7 +35,7 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(object id)
         {
             var entity = _context.Set<User>().Find(id);
             if (entity != null)
@@ -46,7 +47,6 @@ namespace DAL.Repositories
 
         public void Update(User entity)
         {
-           
             var existingUser = _context.Users.FirstOrDefault(t => t.Id == entity.Id);
             if (existingUser != null)
             {

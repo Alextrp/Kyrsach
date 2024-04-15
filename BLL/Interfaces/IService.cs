@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.IRepositories
+namespace BLL.Interfaces
 {
-    public interface IRepository<T>
+    public interface IService<T> where T : class
     {
         List<T> GetAll();
         T GetById(object id);

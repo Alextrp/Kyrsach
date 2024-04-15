@@ -22,9 +22,9 @@ namespace DAL.Repositories
             return _context.VehicleTypes.ToList();
         }
 
-        public VehicleType GetById(int id)
+        public VehicleType GetById(object id)
         {
-            return _context.VehicleTypes.FirstOrDefault(vt => vt.VehicleTypeID == id);
+            return _context.VehicleTypes.Find(id);
         }
 
         public void Add(VehicleType entity)
@@ -33,7 +33,7 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(object id)
         {
             var vehicleType = _context.VehicleTypes.Find(id);
             if (vehicleType != null)
