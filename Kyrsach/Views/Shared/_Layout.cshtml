@@ -2,48 +2,174 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Kyrsach</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Kyrsach.styles.css" asp-append-version="true" />
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="shortcut icon" href="~/kyrs/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="~/kyrs/images/favicon.ico" type="image/x-icon" />
+    <title>Only cargo</title>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" href="~/kyrs/css/bootstrap.min.css" />
+    <link href="~/kyrs/css/animate.css?v=1.0" rel="stylesheet" />
+    <!-- Slider-->
+    <link rel="stylesheet" href="~/kyrs/css/slick.css?v=1.0" />
+    <link rel="stylesheet" href="~/kyrs/css/jquery.bxslider.css?v=1.0" />
+    <link rel="stylesheet" href="~/kyrs/css/owl.carousel.min.css?v=1.0" />
+    <link rel="stylesheet" href="~/kyrs/css/jquery.fancybox.css?v=1.0" />
+    <!-- Font -->
+    <link rel="stylesheet" href="~/kyrs/webkit/webkit.css?v=1.0" />
+    <link rel="stylesheet" href="~/kyrs/css/font-awesome.css?v=1.0" />
+    <link href="~/kyrs/css/style.css?v=1.0" rel="stylesheet" />
+    <link href="~/kyrs/css/media.css?v=1.0" rel="stylesheet" />
+
+    
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Kyrsach</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <header id="header" class="float-panel" data-top="0" data-scroll="100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8">
+                    <div class="logo">
+                        <a href="~/kyrs/index.html">
+                            <img src="~/kyrs/images/newLogo.png"
+                                 alt="logo"
+                                 style="width: 35%; height: 35%" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 main-menu">
+                    <div class="menuBar jumplinks">
+                        <nav class="navbar navbar-default">
+                            <div class="navbar-header">
+                                <button type="button"
+                                        class="navbar-toggle collapsed"
+                                        data-toggle="collapse"
+                                        data-target="#bs-example-navbar-collapse-1"
+                                        aria-expanded="false">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                
+                            </div>
+
+                            <div class="collapse navbar-collapse"
+                                 id="bs-example-navbar-collapse-1">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="#mainBox">Home</a></li>
+                                    <li><a href="#feature">Feature</a></li>
+                                    <li><a href="#cars">Машины</a></li>
+                                    <li><a asp-controller="Account" asp-action="Login">Вход</a></li>
+                                    <li><a asp-controller="Account" asp-action="Register">Регистрация</a></li>
+                                </ul>
+                                
+                            </div>
+
+                            
+                        </nav>
+                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
-    <div class="container">
+    <!-- Header Section Ends -->
+
+    
+
+    <div class="site-main">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- Footer Section Begins -->
+    <footer id="footer" class="bg-black pad-top-60 pad-bottom-60 footer">
         <div class="container">
-            &copy; 2024 - Kyrsach - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 wow animated fadeInUp visible-lg visible-md visible-sm hidden-xs"
+                     data-wow-delay="0.5s">
+                    <h6 class="copyright">
+                        &copy; 2016 Agency is powered by
+                        <a href="https://t.me/Alexgoho" target="_blank">Alexgoho.</a>
+                    </h6>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding wow animated fadeInUp"
+                     data-wow-delay="0.5s">
+                    <div class="foot_middle">
+                        <a href="javascript:void(0);">
+                            <img src="~/kyrs/images/newlogo.png"
+                                 alt="image"
+                                 style="width: 35%; height: 35%" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 wow animated fadeInUp"
+                     data-wow-delay="0.5s">
+                    <ul class="socialLinks">
+                        <li>
+                            <a href="javascript:void(0);" target="_blank">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" target="_blank">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" target="_blank">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" target="_blank">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" target="_blank">
+                                <i class="fa fa-envelope-o"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 wow animated fadeInUp hidden-lg hidden-md hidden-sm visible-xs"
+                     data-wow-delay="0.5s">
+                    <h6 class="copyright">
+                        &copy; 2016 Agency is powered by
+                        <a href="https://store.multidots.com/" target="_blank">DotStore.</a>
+                    </h6>
+                </div>
+            </div>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Footer Section Ends -->
+
+    
+    <!-- Jquery Js -->
+    <script src="~/kyrs/js/jquery.min.js"></script>
+    <!-- Latest compiled and minified Bootstrap JavaScript -->
+    <script src="~/kyrs/js/bootstrap.min.js"></script>
+    <!-- Element Js -->
+    <script src="~/kyrs/js/element.js"></script>
+    <script type="text/javascript" src="~/kyrs/js/modernizr.js"></script>
+    <!-- slider -->
+    <script src="~/kyrs/js/slick.js"></script>
+    <script src="~/kyrs/js/jquery.bxslider.js"></script>
+    <script src="~/kyrs/js/owl.carousel.js"></script>
+    <!-- Parallax -->
+    <script type="text/javascript" src="~/kyrs/js/paraxify.js"></script>
+    <script type="text/javascript"
+            src="~/kyrs/js/jquery.localscroll-1.2.7-min.js"></script>
+    <!-- wow -->
+    <script src="~/kyrs/js/wow.min.js"></script>
+    <!-- Isotope -->
+    <script type="text/javascript" src="~/kyrs/js/jquery.isotope.min.js"></script>
+    <!-- imagesloaded  -->
+    <script type="text/javascript" src="~/kyrs/js/imagesloaded.pkgd.min.js"></script>
+    <!-- Fancybox  -->
+    <script type="text/javascript" src="~/kyrs/js/jquery.fancybox.js"></script>
+    <script type="text/javascript" src="~/kyrs/js/waypoints.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

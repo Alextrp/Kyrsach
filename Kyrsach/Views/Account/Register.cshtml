@@ -1,0 +1,62 @@
+﻿@model Kyrsach.Models.RegisterViewModel 
+@{ ViewData["Title"] = "Register"; }
+
+<!DOCTYPE html>
+<html lang="en">
+  <body
+    id="mainBox"
+    data-spy="scroll"
+    data-target="#bs-example-navbar-collapse-1"
+    data-offset="150"
+  >
+    <!-- Header Section Begins -->
+    <header id="header" class="float-panel" data-top="0" data-scroll="100">
+      <!-- Ваш код заголовка -->
+    </header>
+
+    <div id="site-main" style="margin-top:200px">
+      <div class="main">
+        <h2>Register</h2>
+
+        <form asp-action="Register" method="post">
+          <div asp-validation-summary="All" class="text-danger"></div>
+          <div>
+            <label asp-for="Username"></label>
+            <input asp-for="Username" class="form-control" />
+            <span asp-validation-for="Username" class="text-danger"></span>
+          </div>
+          <div>
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+          </div>
+          <div>
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+          </div>
+          <div>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+          </div>
+          <div>
+            <label asp-for="ConfirmPassword"></label>
+            <input
+              asp-for="ConfirmPassword"
+              type="password"
+              class="form-control"
+            />
+            <span
+              asp-validation-for="ConfirmPassword"
+              class="text-danger"
+            ></span>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
