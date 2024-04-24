@@ -1,0 +1,31 @@
+﻿@model Kyrsach.Models.TransportOrderViewModel
+
+@{
+    ViewData["Title"] = "Create Order";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="CalculatePrice">
+    @* Existing fields *@
+    <div>
+        <label asp-for="CargoTypeID"></label>
+        <select asp-for="CargoTypeID" asp-items="Model.CargoTypes" class="form-control"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Calculate Price</button>
+</form>
+
+@if (ViewBag.Price != null)
+{
+    <p>@ViewBag.Price</p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form asp-action="CreateOrder">
+            <button type="submit" class="btn btn-success">Place Order</button>
+        </form>
+    }
+    else
+    {
+        <p>Please <a asp-controller="Account" asp-action="Login">log in</a> to place an order.</p>
+    }
+}

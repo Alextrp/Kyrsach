@@ -33,6 +33,7 @@ namespace Kyrsach.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    HttpContext.Session.SetString("UserName", model.Username);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Invalid login attempt.");
@@ -66,7 +67,7 @@ namespace Kyrsach.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "Клиент");
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Login", "Account");
                 }
                 foreach (var error in result.Errors)
                 {

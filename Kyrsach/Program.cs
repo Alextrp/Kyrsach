@@ -92,6 +92,19 @@ foreach (var roleName in roleNames)
 //builder.Services.AddScoped<ICargoRepository, CargoRepository>();
 //builder.Services.AddScoped<ICargoTypeRepository, CargoTypeRepository>();
 builder.Services.AddScoped<IUnitOfWork, EFUnitOfWork>();
+builder.Services.AddScoped<IService<OrderDTO>, OrderService>();
+builder.Services.AddScoped<IService<CargoDTO>, CargoService>();
+builder.Services.AddScoped<IService<CargoTypeDTO>, CargoTypeService>();
+builder.Services.AddScoped<IService<OrderStatusDTO>, OrderStatusService>();
+builder.Services.AddScoped<IService<PaymentDTO>, PaymentService>();
+builder.Services.AddScoped<IService<ReviewDTO>, ReviewService>();
+builder.Services.AddScoped<IService<SessionDTO>, SessionService>();
+builder.Services.AddScoped<IService<TrackingDTO>, TrackingService>();
+builder.Services.AddScoped<IService<UserDTO>, UserService>();
+builder.Services.AddScoped<IService<VehicleDTO>, VehicleService>();
+builder.Services.AddScoped<IService<VehicleTypeDTO>, VehicleTypeService>();
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

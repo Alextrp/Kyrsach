@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class CargoTypeService:IService<CargoTypeDTO>
+    public class CargoTypeService : IService<CargoTypeDTO>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ namespace BLL.Services
         public CargoTypeService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<CargoType, CargoDTO>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<CargoType, CargoTypeDTO>().ReverseMap()).CreateMapper();
         }
 
         public List<CargoTypeDTO> GetAll()

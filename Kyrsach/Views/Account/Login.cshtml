@@ -1,21 +1,166 @@
-﻿@model Kyrsach.Models.LoginViewModel
-@{
-    ViewData["Title"] = "Login";
-}
+﻿@model Kyrsach.Models.LoginViewModel 
+@{ ViewData["Title"] = "Login"; }
 
-<h2>Login</h2>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      .form {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
 
-<form asp-action="Login" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" name="username" class="form-control" required />
+      /* Styling labels for better readability */
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 16px;
+        color: #333;
+      }
+
+      /* Styling the input fields for better visual impact */
+      .input,
+      .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box; /* Makes sure padding doesn't affect the width */
+        margin-bottom: 10px; /* Adds space below each input */
+      }
+
+      /* Error message styling */
+      .text-danger {
+        color: #d9534f;
+        font-size: 14px;
+      }
+
+      /* Button styling */
+      .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }
+
+      /* Focus styles on inputs */
+      .input:focus,
+      .form-control:focus {
+        border-color: #66afe9;
+        outline: 0;
+        box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+      }
+
+      label,
+      .input,
+      .form-control,
+      .btn-primary {
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <!--Header beggins-->
+
+  <body
+    id="mainBox"
+    data-spy="scroll"
+    data-target="#bs-example-navbar-collapse-1"
+    data-offset="150"
+  >
+    <!-- Header Section Begins -->
+    <header id="header" class="float-panel" data-top="0" data-scroll="100">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8">
+            <div class="logo">
+              <a asp-controller="Home" asp-action="Index">
+                <img
+                  src="~/kyrs/images/newLogo.png"
+                  alt="logo"
+                  style="width: 35%; height: 35%"
+                />
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 main-menu">
+            <div class="menuBar jumplinks">
+              <nav class="navbar navbar-default">
+                <div class="navbar-header">
+                  <button
+                    type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false"
+                  >
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                </div>
+
+                <div
+                  class="collapse navbar-collapse"
+                  id="bs-example-navbar-collapse-1"
+                >
+                  <ul class="nav navbar-nav navbar-right">
+                    <li>
+                      <a asp-controller="Home" asp-action="Index">Главная</a>
+                    </li>
+
+                    <li>
+                      <a asp-controller="Account" asp-action="Login">Вход</a>
+                    </li>
+                    <li>
+                      <a asp-controller="Account" asp-action="Register"
+                        >Регистрация</a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="site-main" style="margin-top: 200px">
+      <div class="main">
+        <h2 class="secTitle">Вход</h2>
+
+        <form asp-action="Login" class="form" method="post">
+          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+          <div>
+            <label for="username">Username:</label>
+            <input type="text" name="username" class="form-control" required />
+          </div>
+          <div>
+            <label for="password">Password:</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              required
+            />
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" name="password" class="form-control" required />
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary">Login</button>
-    </div>
-</form>
+  </body>
+</html>

@@ -16,7 +16,7 @@ namespace BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public TrackingService(IUnitOfWork unitOfWork, IMapper mapper)
+        public TrackingService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Tracking, TrackingDTO>()).CreateMapper();

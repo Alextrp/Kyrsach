@@ -1,3 +1,6 @@
+using BLL.DTO;
+using BLL.Interfaces;
+using DAL.Entities;
 using Kyrsach.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -10,11 +13,12 @@ namespace Kyrsach.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
+            _logger = logger;  
         }
 
         public IActionResult Index()
         {
+
             return View();
         }
 
