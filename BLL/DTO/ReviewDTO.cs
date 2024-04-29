@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DAL.Entities;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,11 +11,17 @@ namespace BLL.DTO
 {
     public class ReviewDTO
     {
+        [Key]
         public int ReviewID { get; set; }
 
         public int OrderID { get; set; }
 
+        [ForeignKey("OrderID")]
+        public OrderDTO Order { get; set; }
+
         public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public UserDTO User { get; set; }
 
         public decimal Rating { get; set; }
         public string Comment { get; set; }

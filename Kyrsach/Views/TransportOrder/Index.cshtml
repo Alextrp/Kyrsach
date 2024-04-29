@@ -4,28 +4,186 @@
     ViewData["Title"] = "Create Order";
 }
 
-<h2>@ViewData["Title"]</h2>
+<!DOCTYPE html>
+<html lang="en">
 
-<form asp-action="CalculatePrice">
-    @* Existing fields *@
-    <div>
-        <label asp-for="CargoTypeID"></label>
-        <select asp-for="CargoTypeID" asp-items="Model.CargoTypes" class="form-control"></select>
-    </div>
-    <button type="submit" class="btn btn-primary">Calculate Price</button>
-</form>
+<head>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=d33a7569-1f39-4ae1-bb04-52e1465f0c51&lang=ru_Ru" type="text/javascript"></script>
+    
+    <script>
+        function calculateDistance(event) {
+            event.preventDefault(); // Предотвратить стандартную отправку формы
 
-@if (ViewBag.Price != null)
-{
-    <p>@ViewBag.Price</p>
-    @if (User.Identity.IsAuthenticated)
+            // Получаем значения полей с адресами из формы
+            var pickupLocation = document.getElementById("PickupLocation").value;
+            var dropoffLocation = document.getElementById("DropoffLocation").value;
+            var form = event.target; // Сохраняем форму для последующей отправки
+
+            // Создаем объекты для геокодирования
+            var geocoder = ymaps.geocode;
+
+            // Выполняем геокодирование для каждого адреса
+            geocoder(pickupLocation).then(function (pickupResult) {
+                var pickupCoords = pickupResult.geoObjects.get(0).geometry.getCoordinates();
+                geocoder(dropoffLocation).then(function (dropoffResult) {
+                    var dropoffCoords = dropoffResult.geoObjects.get(0).geometry.getCoordinates();
+
+                    // Вычисляем расстояние между координатами точек
+                    var distance = ymaps.coordSystem.geo.getDistance(pickupCoords, dropoffCoords);
+
+                    // Отображаем расстояние на странице
+                    document.getElementById("distance").innerText = "Distance: " + distance.toFixed(2) + " meters";
+
+                    // Заполнение скрытого поля значениями
+                    document.getElementById("distance").value = distance.toFixed(2);
+
+                    // Отправляем форму программно, после завершения всех асинхронных вызовов
+                    form.submit();
+                });
+            });
+        }
+    </script>
+
+
+    <style>
+        .form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        /* Styling labels for better readability */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* Styling the input fields for better visual impact */
+        .input,
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Makes sure padding doesn't affect the width */
+            margin-bottom: 10px; /* Adds space below each input */
+        }
+
+        /* Error message styling */
+        .text-danger {
+            color: #d9534f;
+            font-size: 14px;
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+            }
+
+        /* Focus styles on inputs */
+        .input:focus,
+        .form-control:focus {
+            border-color: #66afe9;
+            outline: 0;
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+        }
+
+        label,
+        .input,
+        .form-control,
+        .btn-primary {
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+
+<body id="mainBox"
+      data-spy="scroll"
+      data-target="#bs-example-navbar-collapse-1"
+      data-offset="150">
+    <h2 class="secTitle">Калькулятор</h2>
+
+    <form asp-action="CalculatePrice" class="form" onsubmit="calculateDistance(event);; return false;">
+        <div class="form-group">
+            <label asp-for="PickupLocation">Pickup Location:</label>
+            <input asp-for="PickupLocation" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label asp-for="DropoffLocation">Dropoff Location:</label>
+            <input asp-for="DropoffLocation" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label asp-for="OrderDate">Order Date:</label>
+            <input asp-for="OrderDate" type="date" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryDate">Delivery Date:</label>
+            <input asp-for="DeliveryDate" type="date" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label asp-for="Description">Description:</label>
+            <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Weight">Weight:</label>
+            <input asp-for="Weight" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label asp-for="Volume">Volume:</label>
+            <input asp-for="Volume" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label asp-for="CargoTypeID">Cargo Type:</label>
+            <select asp-for="CargoTypeID" asp-items="Model.CargoTypes" class="form-control" required>
+                <option value="">Select Cargo Type</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="hidden" asp-for="Distance" id="distance" value="distance" />
+        </div>
+        <button type="submit" class="btn btn-primary">Calculate Price</button>
+    </form>
+
+
+    
+    @if (ViewBag.Price != null)
     {
-        <form asp-action="CreateOrder">
-            <button type="submit" class="btn btn-success">Place Order</button>
-        </form>
+        <p class ="secTitle">@ViewBag.Price</p>
+        @if (Context.Session.GetString("UserName") != null)
+        {
+            <form asp-action="CreateOrder" class="form">
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method:</label>
+                    <select class="form-control" id="paymentMethod" name="paymentMethod">
+                        <option value="creditCard">Credit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="bankTransfer">Bank Transfer</option>
+                        <!-- Добавьте другие варианты оплаты, если необходимо -->
+                    </select>
+                </div>
+                <button type="submit" class="btn center btn-primary btn-success">Place Order</button>
+            </form>
+        }
+        else
+        {
+            <p>Please <a asp-controller="Account" asp-action="Login">log in</a> to place an order.</p>
+        }
     }
-    else
-    {
-        <p>Please <a asp-controller="Account" asp-action="Login">log in</a> to place an order.</p>
-    }
-}
+</body>
+</html>

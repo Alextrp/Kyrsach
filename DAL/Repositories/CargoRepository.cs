@@ -21,16 +21,12 @@ namespace DAL.Repositories
         public List<Cargo> GetAll()
         {
             return _context.Set<Cargo>()
-                           .Include(c => c.CargoType)
-                           .Include(c => c.Owner)
                            .ToList();
         }
 
         public Cargo GetById(object id)
         {
             return _context.Set<Cargo>()
-                           .Include(c => c.CargoType)
-                           .Include(c => c.Owner)
                            .FirstOrDefault(c => c.CargoID.Equals(id));
         }
 

@@ -25,6 +25,8 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 
 
+
+
 builder.Services.AddScoped<SignInManager<User>>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -104,12 +106,15 @@ builder.Services.AddScoped<IService<UserDTO>, UserService>();
 builder.Services.AddScoped<IService<VehicleDTO>, VehicleService>();
 builder.Services.AddScoped<IService<VehicleTypeDTO>, VehicleTypeService>();
 
-
+builder.Services.AddDistributedMemoryCache();// добавляем IDistributedMemoryCache
+builder.Services.AddSession();  // добавляем сервисы сессии
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -123,6 +128,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

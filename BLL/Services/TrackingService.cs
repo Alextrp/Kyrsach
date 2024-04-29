@@ -19,7 +19,7 @@ namespace BLL.Services
         public TrackingService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Tracking, TrackingDTO>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Tracking, TrackingDTO>().ReverseMap()).CreateMapper();
         }
 
         public List<TrackingDTO> GetAll()

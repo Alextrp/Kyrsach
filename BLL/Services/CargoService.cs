@@ -14,12 +14,12 @@ namespace BLL.Services
 {
     public class CargoService: IService<CargoDTO>
     {
-        IUnitOfWork DB { get; set; }
+        public readonly IUnitOfWork DB;
         private readonly IMapper _mapper;
 
         public CargoService(IUnitOfWork uow)
         {
-            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Cargo, CargoDTO>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Cargo, CargoDTO>().ReverseMap()).CreateMapper();
             DB = uow;
         }
 

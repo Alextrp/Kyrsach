@@ -19,7 +19,8 @@ namespace BLL.Services
         public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>().ReverseMap()).CreateMapper();
+            
         }
 
         public List<UserDTO> GetAll()

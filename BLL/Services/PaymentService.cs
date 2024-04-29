@@ -19,7 +19,7 @@ namespace BLL.Services
         public PaymentService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<OrderStatus, OrderStatusDTO>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Payment, PaymentDTO>().ReverseMap()).CreateMapper();
         }
 
         public List<PaymentDTO> GetAll()

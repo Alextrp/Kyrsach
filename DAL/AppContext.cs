@@ -34,7 +34,7 @@ namespace DAL
         public AppContext(DbContextOptions<AppContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -62,7 +62,7 @@ namespace DAL
                 .WithOne()
                 .HasForeignKey<OrderStatus>(o => o.StatusID);
             modelBuilder.Entity<Order>()
-                .HasOne(o => o.Driver)
+                .HasOne(o => o.User)
                 .WithOne()
                 .HasForeignKey<Order>(u => u.UserID);
 
@@ -97,7 +97,7 @@ namespace DAL
                 .HasForeignKey<Session>(s => s.UserId);
 
             modelBuilder.Entity<Vehicle>()
-                .HasOne(v => v.Driver)
+                .HasOne(v => v.User)
                 .WithOne()
                 .HasForeignKey<Vehicle>(u => u.UserID);
             modelBuilder.Entity<Vehicle>()

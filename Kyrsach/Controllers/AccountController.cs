@@ -1,8 +1,12 @@
 ﻿using BLL.DTO;
 using DAL.Entities;
 using Kyrsach.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Kyrsach.Controllers
 {
@@ -25,21 +29,61 @@ namespace Kyrsach.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> Login(LoginViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = await _userManager.FindByNameAsync(model.Username);
+        //        var roles = await _userManager.GetRolesAsync(user);
+        //        var role = roles.FirstOrDefault();
+        //        if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+        //        {
+        //            var claims = new List<Claim>{
+        //                    new Claim(ClaimTypes.Name, user.UserName),
+        //                    new Claim(ClaimTypes.Role, role), 
+        //                    // Другие данные пользователя, которые вы хотите сохранить
+        //               };
+        //            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        //            var authProperties = new AuthenticationProperties
+        //            {
+        //                // Дополнительные свойства аутентификации, например, время жизни куки и др.
+        //                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30), // Установите желаемый срок действия куки
+        //                IsPersistent = true // Сделайте куки постоянными (не сессионными)
+        //            };
+
+        //            await HttpContext.SignInAsync(
+        //                CookieAuthenticationDefaults.AuthenticationScheme,
+        //                new ClaimsPrincipal(claimsIdentity),
+        //                authProperties);
+
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        ModelState.AddModelError("", "Invalid login attempt.");
+        //    }
+        //    return View(model);
+        //}
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, lockoutOnFailure: false);
+                var user = await _userManager.FindByNameAsync(model.Username);
+                var roles = await _userManager.GetRolesAsync(user);
+                var role = roles.FirstOrDefault();
                 if (result.Succeeded)
                 {
                     HttpContext.Session.SetString("UserName", model.Username);
+                    HttpContext.Session.SetString("UserRole", role);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Invalid login attempt.");
             }
             return View(model);
         }
+
 
         [HttpGet]
         public IActionResult Register()

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DAL.Entities;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,13 +11,17 @@ namespace BLL.DTO
 {
     public class TrackingDTO
     {
+        [Key]
         public int TrackingID { get; set; }
 
         public int OrderID { get; set; }
-        
+        [ForeignKey("OrderID")]
+        public OrderDTO Order { get; set; }
 
         public int StatusID { get; set; }
-       
+        [ForeignKey("StatusID")]
+
+        public OrderStatusDTO Status { get; set; }
 
         public DateTime Timestamp { get; set; }
         public string Location { get; set; }

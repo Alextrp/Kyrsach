@@ -19,7 +19,7 @@ namespace BLL.Services
         public OrderService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Order, OrderDTO>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Order, OrderDTO>().ReverseMap()).CreateMapper();
         }
 
         public List<OrderDTO> GetAll()

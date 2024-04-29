@@ -27,6 +27,6 @@ namespace DAL.Entities
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
-        public User Driver { get; set; }
+        public User User { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 using BLL.DTO;
 using BLL.Interfaces;
+using BLL.Services;
 using DAL.Entities;
+using DAL.IRepositories;
 using Kyrsach.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -10,9 +12,11 @@ namespace Kyrsach.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
+        IService<OrderDTO> _cargoService;
+        public HomeController(ILogger<HomeController> logger, IService<OrderDTO> service)
+        { 
+            _cargoService = service;
+            _cargoService.GetAll();
             _logger = logger;  
         }
 

@@ -19,7 +19,7 @@ namespace BLL.Services
         public ReviewService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Review, ReviewDTO>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Review, ReviewDTO>().ReverseMap()).CreateMapper();
         }
 
         public List<ReviewDTO> GetAll()

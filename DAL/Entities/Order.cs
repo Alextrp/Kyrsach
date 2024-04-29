@@ -12,7 +12,6 @@ namespace DAL.Entities
     {
         [Key]
         public int OrderID { get; set; }
-
         public int CargoID { get; set; }
         [ForeignKey("CargoID")]
         public Cargo Cargo { get; set; }
@@ -29,8 +28,8 @@ namespace DAL.Entities
         [ForeignKey("StatusID")]
         public OrderStatus Status { get; set; }
 
-        public string UserID { get; set; }
+        public string? UserID { get; set; }
         [ForeignKey("UserID")]
-        public User Driver { get; set; }
+        public User User { get; set; }
     }
 }

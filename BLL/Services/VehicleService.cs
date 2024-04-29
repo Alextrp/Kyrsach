@@ -19,7 +19,7 @@ namespace BLL.Services
         public VehicleService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Vehicle, VehicleDTO>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Vehicle, VehicleDTO>().ReverseMap()).CreateMapper();
         }
 
         public List<VehicleDTO> GetAll()

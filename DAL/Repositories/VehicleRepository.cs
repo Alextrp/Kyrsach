@@ -21,16 +21,12 @@ namespace DAL.Repositories
         public List<Vehicle> GetAll()
         {
             return _context.Vehicles
-                           .Include(v => v.VehicleType) // Загрузка связанного типа транспорта
-                           .Include(v => v.Driver) // Загрузка связанного водителя
                            .ToList();
         }
 
         public Vehicle GetById(object id)
         {
             return _context.Vehicles
-                           .Include(v => v.VehicleType)
-                           .Include(v => v.Driver)
                            .FirstOrDefault(v => v.VehicleID.Equals(id));
         }
 
@@ -61,7 +57,7 @@ namespace DAL.Repositories
                     existingVehicle.VehicleType = _context.VehicleTypes.Find(entity.VehicleTypeID);
 
                 if (existingVehicle.UserID != entity.UserID)
-                    existingVehicle.Driver = _context.Users.Find(entity.UserID);
+                    existingVehicle.User = _context.Users.Find(entity.UserID);
 
                 _context.SaveChanges();
             }

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DAL.Entities;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,6 +11,7 @@ namespace BLL.DTO
 {
     public class CargoDTO
     {
+        [Key]
         public int CargoID { get; set; }
 
         public string Description { get; set; }
@@ -18,8 +21,12 @@ namespace BLL.DTO
         public double Volume { get; set; }
 
         public int CargoTypeID { get; set; }
+        [ForeignKey("CargoTypeID")]
+        public CargoType CargoType { get; set; }
 
         public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public User User { get; set; }
 
 
         public CargoDTO() { }

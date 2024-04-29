@@ -19,7 +19,7 @@ namespace BLL.Services
         public SessionService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Review, ReviewDTO>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<Session, SessionDTO>().ReverseMap()).CreateMapper();
         }
 
         public List<SessionDTO> GetAll()

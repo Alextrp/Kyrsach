@@ -25,6 +25,6 @@ namespace DAL.Entities
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
-        public User Owner { get; set; }
+        public User User { get; set; }
     }
 }

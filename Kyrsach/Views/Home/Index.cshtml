@@ -49,8 +49,15 @@
                                         <li><a href="#feature">Feature</a></li>
                                         <li><a href="#cars">Машины</a></li>
                                         <li><a asp-controller="TransportOrder" asp-action="Index">Калькулятор</a></li>
-                                        <li><a asp-controller="Account" asp-action="Login">Вход</a></li>
-                                        <li><a asp-controller="Account" asp-action="Register">Регистрация</a></li>
+                                        @if (Context.Session.GetString("UserName") == null)
+                                        {
+                                            <li><a asp-controller="Account" asp-action="Login">Вход</a></li>
+                                            <li><a asp-controller="Account" asp-action="Register">Регистрация</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li>@Context.Session.GetString("UserName")</li>
+                                        }
                                     </ul>
 
                                 </div>

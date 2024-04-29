@@ -1,10 +1,13 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces;
+using DAL.Entities;
 using Kyrsach.Models;
-using Microsoft.AspNet.Identity;
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Ninject.Activation;
 
 namespace Kyrsach.Controllers
 {
@@ -16,11 +19,13 @@ namespace Kyrsach.Controllers
         public IService<OrderStatusDTO> _serviceOrderStatus;
         public IService<PaymentDTO> _servicePayment;
         public IService<UserDTO> _serviceUserDTO;
+        private readonly UserManager<User> _userManager;
 
-        public TransportOrderController(IService<CargoDTO> serviceCargo, IService<CargoTypeDTO> serviceCargoType,
+        public TransportOrderController(UserManager<User> userManager, IService<CargoDTO> serviceCargo, IService<CargoTypeDTO> serviceCargoType,
             IService<OrderDTO> serviceOrder, IService<OrderStatusDTO> serviceOrderStatus,
             IService<PaymentDTO> servicePayment, IService<UserDTO> serviceUserDTO)
         {
+            _userManager = userManager;
             _serviceCargo = serviceCargo;
             _serviceCargoType = serviceCargoType;
             _serviceOrder = serviceOrder;
@@ -45,69 +50,77 @@ namespace Kyrsach.Controllers
         [HttpPost]
         public async Task<IActionResult> CalculatePrice(TransportOrderViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                double price = await CalculatePrice(model.PickupLocation, model.DropoffLocation, model.Weight,model.Volume);
-                ViewBag.Price = $"Estimated price: ${price}";
-            }
             model.CargoTypes = _serviceCargoType.GetAll().Select(ct => new SelectListItem
             {
                 Value = ct.CargoTypeID.ToString(),
                 Text = ct.TypeName
             });
+
+            if (!ModelState.IsValid)
+            {
+                double price = await CalculatedPrice(Double.Parse(model.Distance.Replace('.',',')), model.Weight, model.Volume);
+                ViewBag.Price = $"Estimated price: ${price}";
+            }
+
+            HttpContext.Session.SetString("OrderData", JsonConvert.SerializeObject(model));
+
             return View("Index", model);
         }
 
-        private async Task<double> CalculatePrice(string pickupLocation, string dropoffLocation, double weight, double volume)
+
+        private async Task<double> CalculatedPrice(double distance, double weight, double volume)
         {
             double basePrice = 50.0;  // Базовая цена
-            double distance = await GetDistance(pickupLocation, dropoffLocation);
+           
             double pricePerKm = 0.5;  // Цена за километр
             double weightFactor = 1.5;  // Фактор веса
             double volumeFactor = 2.0;  // Фактор объема
 
-            return basePrice + (distance * pricePerKm) + (weight * weightFactor) + (volume * volumeFactor);
+            return Math.Round(basePrice + (distance * pricePerKm / 1000) + (weight * weightFactor) + (volume * volumeFactor), 2);
         }
 
-
-        private async Task<double> GetDistance(string pickupLocation, string dropoffLocation)
-        {
-            var apiKey = "AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao";
-            var url = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins={Uri.EscapeDataString(pickupLocation)}&destinations={Uri.EscapeDataString(dropoffLocation)}&key={apiKey}";
-
-            using (HttpClient client = new HttpClient())
-            {
-                var response = await client.GetAsync(url);
-                var content = await response.Content.ReadAsStringAsync();
-                var distanceMatrix = JsonConvert.DeserializeObject<GoogleDistanceMatrixResponse>(content);
-
-                if (distanceMatrix.Rows.Any() && distanceMatrix.Rows.First().Elements.Any())
-                {
-                    return distanceMatrix.Rows.First().Elements.First().Distance.Value / 1000.0;  // Преобразование из метров в километры
-                }
-                return 0;
-            }
-        }
 
 
         [HttpPost]
-        public IActionResult CreateOrder(TransportOrderViewModel model)
+        public async Task<IActionResult> CreateOrder(string paymentMethod)
         {
-            if (User.Identity.IsAuthenticated)
+            var orderDataString = HttpContext.Session.GetString("OrderData");
+            var model = JsonConvert.DeserializeObject<TransportOrderViewModel>(orderDataString);
+            if (HttpContext.Session.GetString("UserName") != null)
             {
                 if (ModelState.IsValid)
                 {
+
+                    var user = await _userManager.FindByNameAsync(HttpContext.Session.GetString("UserName"));
+
+                    model.CargoTypes = _serviceCargoType.GetAll().Select(ct => new SelectListItem
+                    {
+                        Value = ct.CargoTypeID.ToString(),
+                        Text = ct.TypeName
+                    });
+
+                    CreateCargo(user.Id, model);
                     var order = new OrderDTO
                     {
+                        OrderID = _serviceOrder.GetAll()
+                            .OrderByDescending(o => o.OrderID)
+                            .Select(o => o.OrderID)
+                            .FirstOrDefault()+1,
                         PickupLocation = model.PickupLocation,
                         DropoffLocation = model.DropoffLocation,
                         OrderDate = model.OrderDate,
                         DeliveryDate = model.DeliveryDate,
-                        CargoID = CreateCargo(model).CargoID,
-                        UserID = User.Identity.GetUserId(), // Assumes identity management is in place
+                        CargoID = _serviceCargo.GetAll()
+                            .OrderByDescending(o => o.CargoID)
+                            .Select(o => o.CargoID)
+                            .FirstOrDefault(),
+                        UserID = null, // Assumes identity management is in place
                         StatusID = 1 // Assuming 1 is the ID for 'new'
                     };
                     _serviceOrder.Add(order);
+
+                    CreatePayment(paymentMethod);
+
                     return RedirectToAction("OrderSuccess");
                 }
             }
@@ -116,15 +129,11 @@ namespace Kyrsach.Controllers
                 return RedirectToAction("Login", "Account"); // Redirect to login
             }
 
-            model.CargoTypes = _serviceCargoType.GetAll().Select(ct => new SelectListItem
-            {
-                Value = ct.CargoTypeID.ToString(),
-                Text = ct.TypeName
-            });
+            
             return View("Index", model);
         }
 
-        private CargoDTO CreateCargo(TransportOrderViewModel model)
+        private CargoDTO CreateCargo(string id, TransportOrderViewModel model)
         {
             var cargo = new CargoDTO
             {
@@ -132,10 +141,40 @@ namespace Kyrsach.Controllers
                 Weight = model.Weight,
                 Volume = model.Volume,
                 CargoTypeID = model.CargoTypeID,
-                UserID = User.Identity.GetUserId() // Assumes identity management
+                UserID = id // Assumes identity management
             };
             _serviceCargo.Add(cargo);
             return cargo;
+        }
+
+        private async void CreatePayment(string paymentMethod)
+        {
+            var orderDataString = HttpContext.Session.GetString("OrderData");
+            var model = JsonConvert.DeserializeObject<TransportOrderViewModel>(orderDataString);
+
+            var lastOrderId = _serviceOrder.GetAll()
+                .OrderByDescending(o => o.OrderID)
+                .Select(o => o.OrderID)
+                .FirstOrDefault();
+            var lastPaymentId = _servicePayment.GetAll()
+                .OrderByDescending(o => o.PaymentId)
+                .Select(o => o.PaymentId)
+                .FirstOrDefault();
+            if (lastPaymentId == 0)
+                lastPaymentId = 1;
+
+            double calculatedPrice = await CalculatedPrice(Double.Parse(model.Distance.Replace('.', ',')), model.Weight, model.Volume);
+            var payment = new PaymentDTO
+            {
+                
+                OrderID = lastOrderId,
+                Amount = (int)Math.Round(calculatedPrice),
+                PaymentDate = DateTime.Now.Date,
+                PaymentMethod = paymentMethod,
+                Status = "Оплачено"
+            };
+
+            _servicePayment.Add(payment);
         }
 
     }

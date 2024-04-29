@@ -20,7 +20,7 @@ namespace DAL.Entities
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
-        public User Customer { get; set; }
+        public User User { get; set; }
 
         public decimal Rating {  get; set; }
         public string Comment {  get; set; }
