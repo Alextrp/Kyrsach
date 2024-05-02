@@ -9,5 +9,7 @@ namespace DAL.IRepositories
 {
     public interface IOrderRepository:IRepository<Order>
     {
+        public List<Order> GetOrdersForManager(int statusId);
+
     }
 }

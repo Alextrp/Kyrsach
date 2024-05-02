@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
+using BLL.Interfaces;
+using BLL.Services;
 
 namespace Kyrsach.Controllers
 {
@@ -15,9 +17,13 @@ namespace Kyrsach.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        IService<PaymentDTO> _paymentService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager, IService<PaymentDTO> paymentService)
         {
+            //_paymentService = paymentService;
+            //_paymentService.GetAll();
+
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
@@ -99,17 +105,17 @@ namespace Kyrsach.Controllers
                 var user = new User { UserName = model.Username, Email = model.Email, PhoneNumber = model.PhoneNumber };
 
                 // Создаем роль "Клиент", если ее нет
-                var roleExists = await _roleManager.RoleExistsAsync("Клиент");
+                var roleExists = await _roleManager.RoleExistsAsync("Менеджер");
                 if (!roleExists)
                 {
-                    await _roleManager.CreateAsync(new IdentityRole("Клиент"));
+                    await _roleManager.CreateAsync(new IdentityRole("Менеждер"));
                 }
 
                 // Регистрируем пользователя и назначаем ему роль "Клиент"
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Клиент");
+                    await _userManager.AddToRoleAsync(user, "Менеджер");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Login", "Account");
                 }

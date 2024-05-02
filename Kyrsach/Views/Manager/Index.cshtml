@@ -1,0 +1,74 @@
+﻿@model IEnumerable<dynamic>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Pickup Location</th>
+            <th>Dropoff Location</th>
+            <th>Order Date</th>
+            <th>Delivery Date</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.OrderId</td>
+                <td>@item.Amount</td>
+                <td>@item.Status</td>
+                <td>@item.PickupLocation</td>
+                <td>@item.DropoffLocation</td>
+                <td>@item.OrderDate</td>
+                <td>@item.DeliveryDate</td>
+                <td>@item.Description</td>
+                <td>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#assignDriverModal_@item.OrderId">
+                        Assign Driver
+                    </button>
+                    <a asp-action="RejectOrder" asp-route-orderId="@item.OrderId" class="btn btn-danger">Reject Order</a>
+                </td>
+            </tr>
+            <!-- Modal -->
+            <div class="modal fade" id="assignDriverModal_@item.OrderId" tabindex="-1" role="dialog" aria-labelledby="assignDriverModalLabel_@item.OrderId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="assignDriverModalLabel_@item.OrderId">Assign Driver</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h6>Select a driver for order ID: @item.OrderId</h6>
+                            <select class="form-control">
+                                @foreach (var user in ViewBag.Users)
+                                {
+                                    <option value="@user.Id">@user.UserName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="assignDriver(@item.OrderId)">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function assignDriver(orderId) {
+            var userId = $('#assignDriverModal_' + orderId + ' select').val();
+            window.location.href = '/Manager/AssignDriver?orderId=' + orderId + '&userId=' + userId;
+        }
+    </script>
+}

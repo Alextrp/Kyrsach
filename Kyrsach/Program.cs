@@ -94,7 +94,7 @@ foreach (var roleName in roleNames)
 //builder.Services.AddScoped<ICargoRepository, CargoRepository>();
 //builder.Services.AddScoped<ICargoTypeRepository, CargoTypeRepository>();
 builder.Services.AddScoped<IUnitOfWork, EFUnitOfWork>();
-builder.Services.AddScoped<IService<OrderDTO>, OrderService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IService<CargoDTO>, CargoService>();
 builder.Services.AddScoped<IService<CargoTypeDTO>, CargoTypeService>();
 builder.Services.AddScoped<IService<OrderStatusDTO>, OrderStatusService>();

@@ -24,6 +24,7 @@ namespace BLL.Services
 
         public List<PaymentDTO> GetAll()
         {
+            
             List<Payment> payments = _unitOfWork.Payments.GetAll();
             return _mapper.Map<List<PaymentDTO>>(payments);
         }

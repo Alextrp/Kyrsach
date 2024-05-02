@@ -13,10 +13,14 @@ namespace Kyrsach.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         IService<OrderDTO> _cargoService;
-        public HomeController(ILogger<HomeController> logger, IService<OrderDTO> service)
+        IService<PaymentDTO> _paymentService;
+        public HomeController(ILogger<HomeController> logger)
         { 
-            _cargoService = service;
-            _cargoService.GetAll();
+            //_paymentService = paymentService;
+            //_paymentService.GetAll();
+
+            //_cargoService = service;
+            //_cargoService.GetAll();
             _logger = logger;  
         }
 

@@ -35,6 +35,7 @@ namespace BLL.Services
             return _mapper.Map<UserDTO>(user);
         }
 
+        
         public void Add(UserDTO entity)
         {
             User user = _mapper.Map<User>(entity);

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class OrderService: IService<OrderDTO>
+    public class OrderService: IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -32,6 +32,12 @@ namespace BLL.Services
         {
             Order order = _unitOfWork.Orders.GetById(id);
             return _mapper.Map<OrderDTO>(order);
+        }
+
+        public List<OrderDTO> GetOrdersForManager(int statusId)
+        {
+            List<Order> orders = _unitOfWork.Orders.GetOrdersForManager(statusId);
+            return _mapper.Map<List<OrderDTO>>(orders);
         }
 
         public void Add(OrderDTO entity)

@@ -46,6 +46,50 @@
 
 
     <style>
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .buttonOK {
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .buttonOK:hover {
+                background-color: #0056b3;
+            }
+
+
+
         .form {
             max-width: 600px;
             margin: 20px auto;
@@ -179,6 +223,30 @@
                 </div>
                 <button type="submit" class="btn center btn-primary btn-success">Place Order</button>
             </form>
+
+            @if (ViewBag.Flaf == 1)
+            {
+                <div id="popup-container" class="popup-container">
+                    <div class="popup-content">
+                        <span class="close-btn" onclick="closePopup()">&times;</span>
+                        <h2>Доставка успешно оформлена</h2>
+                        <button onclick="closePopup()">ОК</button>
+                    </div>
+                </div>
+                <button class="buttonOK" onclick="openPopup()">Открыть всплывающее окно</button>
+                <script>
+                    function openPopup() {
+                        var popup = document.getElementById("popup-container");
+                        popup.style.display = "block";
+                    }
+
+                    function closePopup() {
+                        var popup = document.getElementById("popup-container");
+                        popup.style.display = "none";
+                    }
+
+                </script>
+            }
         }
         else
         {

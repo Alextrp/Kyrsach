@@ -27,6 +27,11 @@ namespace DAL.Repositories
             return _context.Set<Order>().Find(id);
         }
 
+        public List<Order> GetOrdersForManager(int statusId)
+        {
+            return _context.Set<Order>().Where(o => o.StatusID == statusId).ToList();
+        }
+
         public void Add(Order entity)
         {
             _context.Set<Order>().Add(entity);

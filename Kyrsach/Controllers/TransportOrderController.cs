@@ -15,14 +15,14 @@ namespace Kyrsach.Controllers
     {
         public IService<CargoDTO> _serviceCargo;
         public IService<CargoTypeDTO> _serviceCargoType;
-        public IService<OrderDTO> _serviceOrder;
+        public IOrderService _serviceOrder;
         public IService<OrderStatusDTO> _serviceOrderStatus;
         public IService<PaymentDTO> _servicePayment;
         public IService<UserDTO> _serviceUserDTO;
         private readonly UserManager<User> _userManager;
 
         public TransportOrderController(UserManager<User> userManager, IService<CargoDTO> serviceCargo, IService<CargoTypeDTO> serviceCargoType,
-            IService<OrderDTO> serviceOrder, IService<OrderStatusDTO> serviceOrderStatus,
+            IOrderService serviceOrder, IService<OrderStatusDTO> serviceOrderStatus,
             IService<PaymentDTO> servicePayment, IService<UserDTO> serviceUserDTO)
         {
             _userManager = userManager;
@@ -121,7 +121,7 @@ namespace Kyrsach.Controllers
 
                     CreatePayment(paymentMethod);
 
-                    return RedirectToAction("OrderSuccess");
+                    ViewBag.Flaf = 1;
                 }
             }
             else
@@ -152,21 +152,17 @@ namespace Kyrsach.Controllers
             var orderDataString = HttpContext.Session.GetString("OrderData");
             var model = JsonConvert.DeserializeObject<TransportOrderViewModel>(orderDataString);
 
-            var lastOrderId = _serviceOrder.GetAll()
+               var lastOrderId = _serviceOrder.GetAll()
                 .OrderByDescending(o => o.OrderID)
                 .Select(o => o.OrderID)
                 .FirstOrDefault();
-            var lastPaymentId = _servicePayment.GetAll()
-                .OrderByDescending(o => o.PaymentId)
-                .Select(o => o.PaymentId)
-                .FirstOrDefault();
-            if (lastPaymentId == 0)
-                lastPaymentId = 1;
+            _servicePayment.GetAll();
+                
 
             double calculatedPrice = await CalculatedPrice(Double.Parse(model.Distance.Replace('.', ',')), model.Weight, model.Volume);
             var payment = new PaymentDTO
             {
-                
+
                 OrderID = lastOrderId,
                 Amount = (int)Math.Round(calculatedPrice),
                 PaymentDate = DateTime.Now.Date,

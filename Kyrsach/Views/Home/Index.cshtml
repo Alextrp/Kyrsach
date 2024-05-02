@@ -49,6 +49,10 @@
                                         <li><a href="#feature">Feature</a></li>
                                         <li><a href="#cars">Машины</a></li>
                                         <li><a asp-controller="TransportOrder" asp-action="Index">Калькулятор</a></li>
+                                        @if (Context.Session.GetString("UserRole") == "Менеджер")
+                                        {
+                                            <li><a asp-controller="Manager" asp-action="Index">Заказы</a></li>
+                                        }
                                         @if (Context.Session.GetString("UserName") == null)
                                         {
                                             <li><a asp-controller="Account" asp-action="Login">Вход</a></li>
