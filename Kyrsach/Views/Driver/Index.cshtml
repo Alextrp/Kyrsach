@@ -1,5 +1,4 @@
-﻿@model IEnumerable<dynamic>
-
+﻿@model IEnumerable<DriverViewModel>
 
 <header id="header" class="float-panel" data-top="0" data-scroll="100">
     <div class="container-fluid">
@@ -59,77 +58,31 @@
       data-target="#bs-example-navbar-collapse-1"
       data-offset="150"
       style="margin-top: 200px">
-
-<table class="table table-striped">
+    <table class="table table-striped">
     <thead>
         <tr>
-            
-            <th>Цена</th>
-            <th>Статус</th>
             <th>Место погрузки</th>
             <th>Место разгрузки</th>
-            <th>Дата отправки</th>
-            <th>Дата получения</th>
-           
-            <th>Действие</th>
+            <th>Дата погрузки</th>
+            <th>Дата разгрузки</th>
+            <th>Начать выполнение</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                
-                <td>@item.Amount</td>
-                <td>@item.Status</td>
                 <td>@item.PickupLocation</td>
                 <td>@item.DropoffLocation</td>
-                <td>@item.OrderDate</td>
-                <td>@item.DeliveryDate</td>
-                
+                <td>@item.OrderDate.ToString("yyyy-MM-dd")</td>
+                <td>@item.DeliveryDate.ToString("yyyy-MM-dd")</td>
                 <td>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#assignDriverModal_@item.OrderId">
-                        Назначить водителя
-                    </button>
-                    <a asp-action="RejectOrder" asp-route-orderId="@item.OrderId" class="btn btn-danger">Отклонить заказ</a>
+                    <form asp-action="AssignOrder" asp-route-orderId="@item.OrderId" method="post">
+                        <button type="submit" class="btn btn-primary">Начать выполнение</button>
+                    </form>
                 </td>
             </tr>
-            <!-- Modal -->
-            <div class="modal fade" id="assignDriverModal_@item.OrderId" tabindex="-1" role="dialog" aria-labelledby="assignDriverModalLabel_@item.OrderId" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="assignDriverModalLabel_@item.OrderId">Назначить водителя</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <h6>Выберете водителя</h6>
-                            <select class="form-control">
-                                @foreach (var user in ViewBag.Users)
-                                {
-                                    <option value="@user.Id">@user.UserName</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                            <button type="button" class="btn btn-primary" onclick="assignDriver(@item.OrderId)">Сохранить изменения</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         }
     </tbody>
 </table>
 </body>
-
-@section Scripts {
-    <script>
-        function assignDriver(orderId) {
-            var userId = $('#assignDriverModal_' + orderId + ' select').val();
-            window.location.href = '/Manager/AssignDriver?orderId=' + orderId + '&userId=' + userId;
-        }
-    </script>
-}

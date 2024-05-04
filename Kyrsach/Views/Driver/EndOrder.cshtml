@@ -1,0 +1,88 @@
+﻿@model IEnumerable<DriverViewModel>
+
+<header id="header" class="float-panel" data-top="0" data-scroll="100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8">
+                <div class="logo">
+                    <a asp-controller="Home" asp-action="Index">
+                        <img src="~/kyrs/images/newLogo.png"
+                             alt="logo"
+                             style="width: 35%; height: 35%" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 main-menu">
+                <div class="menuBar jumplinks">
+                    <nav class="navbar navbar-default">
+                        <div class="navbar-header">
+                            <button type="button"
+                                    class="navbar-toggle collapsed"
+                                    data-toggle="collapse"
+                                    data-target="#bs-example-navbar-collapse-1"
+                                    aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+
+                        <div class="collapse navbar-collapse"
+                             id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a asp-controller="Home" asp-action="Index">Главная</a>
+                                </li>
+
+                                @if (Context.Session.GetString("UserName") == null)
+                                {
+                                    <li><a asp-controller="Account" asp-action="Login">Вход</a></li>
+                                    <li><a asp-controller="Account" asp-action="Register">Регистрация</a></li>
+                                }
+                                else
+                                {
+                                    <li><a>@Context.Session.GetString("UserName")</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<body id="mainBox"
+      data-spy="scroll"
+      data-target="#bs-example-navbar-collapse-1"
+      data-offset="150"
+      style="margin-top: 200px">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Место погрузки</th>
+                <th>Место разгрузки</th>
+                <th>Дата погрузки</th>
+                <th>Дата разгрузки</th>
+                <th>Закончить выполнение</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PickupLocation</td>
+                    <td>@item.DropoffLocation</td>
+                    <td>@item.OrderDate.ToString("yyyy-MM-dd")</td>
+                    <td>@item.DeliveryDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <form asp-action="OrderEnding" asp-route-orderId="@item.OrderId" method="post">
+                            <button type="submit" class="btn btn-primary">Закончить выполнение</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>

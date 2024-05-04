@@ -74,12 +74,13 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Клиент", policy => policy.RequireRole("Клиент"));
     options.AddPolicy("Администратор", policy => policy.RequireRole("Администратор"));
     options.AddPolicy("Менеджер", policy => policy.RequireRole("Менеджер"));
+    options.AddPolicy("Водитель", policy => policy.RequireRole("Водитель"));
 });
 
 var serviceProvider = builder.Services.BuildServiceProvider();
 
 var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-string[] roleNames = { "Клиент", "Администратор", "Менеджер" };
+string[] roleNames = { "Клиент", "Администратор", "Менеджер", "Водитель" };
 IdentityResult roleResult;
 foreach (var roleName in roleNames)
 {

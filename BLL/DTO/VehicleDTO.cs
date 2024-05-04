@@ -24,11 +24,11 @@ namespace BLL.DTO
 
         public int VehicleTypeID { get; set; }
         [ForeignKey("VehicleTypeID")]
-        public VehicleTypeDTO VehicleType { get; set; }
+        public VehicleType VehicleType { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
-        public UserDTO User { get; set; }
+        public User User { get; set; }
 
     }
 }

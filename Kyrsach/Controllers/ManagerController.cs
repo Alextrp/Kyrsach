@@ -1,6 +1,7 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces;
 using BLL.Services;
+using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kyrsach.Controllers
@@ -39,8 +40,8 @@ namespace Kyrsach.Controllers
                     Status = payment.Status,
                     PickupLocation = order.PickupLocation,
                     DropoffLocation = order.DropoffLocation,
-                    OrderDate = order.OrderDate,
-                    DeliveryDate = order.DeliveryDate,
+                    OrderDate = order.OrderDate.ToShortDateString(),
+                    DeliveryDate = order.DeliveryDate.ToShortDateString(),
                     Description = order.DeliveryDate
                 }).ToList();
 
@@ -64,13 +65,23 @@ namespace Kyrsach.Controllers
 
         public IActionResult AssignDriver(int orderId, string userId)
         {
-            // Ваша логика назначения водителя на заказ
+            OrderDTO order = _serviceOrder.GetById(orderId);
+
+            order.UserID = userId;
+            order.StatusID = 2;
+            _serviceOrder.Update(order);
+
+
             return RedirectToAction("Index");
         }
 
         public IActionResult RejectOrder(int orderId)
         {
-            // Ваша логика отклонения заказа
+            OrderDTO order = _serviceOrder.GetById(orderId);
+
+            order.StatusID = 3;
+            _serviceOrder.Update(order);
+
             return RedirectToAction("Index");
         }
 

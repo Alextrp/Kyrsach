@@ -35,41 +35,6 @@ namespace Kyrsach.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Login(LoginViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = await _userManager.FindByNameAsync(model.Username);
-        //        var roles = await _userManager.GetRolesAsync(user);
-        //        var role = roles.FirstOrDefault();
-        //        if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-        //        {
-        //            var claims = new List<Claim>{
-        //                    new Claim(ClaimTypes.Name, user.UserName),
-        //                    new Claim(ClaimTypes.Role, role), 
-        //                    // Другие данные пользователя, которые вы хотите сохранить
-        //               };
-        //            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        //            var authProperties = new AuthenticationProperties
-        //            {
-        //                // Дополнительные свойства аутентификации, например, время жизни куки и др.
-        //                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30), // Установите желаемый срок действия куки
-        //                IsPersistent = true // Сделайте куки постоянными (не сессионными)
-        //            };
-
-        //            await HttpContext.SignInAsync(
-        //                CookieAuthenticationDefaults.AuthenticationScheme,
-        //                new ClaimsPrincipal(claimsIdentity),
-        //                authProperties);
-
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        ModelState.AddModelError("", "Invalid login attempt.");
-        //    }
-        //    return View(model);
-        //}
-
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -105,17 +70,17 @@ namespace Kyrsach.Controllers
                 var user = new User { UserName = model.Username, Email = model.Email, PhoneNumber = model.PhoneNumber };
 
                 // Создаем роль "Клиент", если ее нет
-                var roleExists = await _roleManager.RoleExistsAsync("Менеджер");
+                var roleExists = await _roleManager.RoleExistsAsync("Администратор");
                 if (!roleExists)
                 {
-                    await _roleManager.CreateAsync(new IdentityRole("Менеждер"));
+                    await _roleManager.CreateAsync(new IdentityRole("Администратор"));
                 }
 
                 // Регистрируем пользователя и назначаем ему роль "Клиент"
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Менеджер");
+                    await _userManager.AddToRoleAsync(user, "Администратор");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Login", "Account");
                 }

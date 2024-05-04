@@ -1,0 +1,117 @@
+﻿@model IEnumerable<dynamic>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<header id="header" class="float-panel" data-top="0" data-scroll="100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8">
+                <div class="logo">
+                    <a asp-controller="Home" asp-action="Index">
+                        <img src="~/kyrs/images/newLogo.png"
+                             alt="logo"
+                             style="width: 35%; height: 35%" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 main-menu">
+                <div class="menuBar jumplinks">
+                    <nav class="navbar navbar-default">
+                        <div class="navbar-header">
+                            <button type="button"
+                                    class="navbar-toggle collapsed"
+                                    data-toggle="collapse"
+                                    data-target="#bs-example-navbar-collapse-1"
+                                    aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+
+                        <div class="collapse navbar-collapse"
+                             id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a asp-controller="Home" asp-action="Index">Главная</a>
+                                </li>
+
+                                @if (Context.Session.GetString("UserName") == null)
+                                {
+                                    <li><a asp-controller="Account" asp-action="Login">Вход</a></li>
+                                    <li><a asp-controller="Account" asp-action="Register">Регистрация</a></li>
+                                }
+                                else
+                                {
+                                    <li><a>@Context.Session.GetString("UserName")</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<body id="mainBox"
+      data-spy="scroll"
+      data-target="#bs-example-navbar-collapse-1"
+      data-offset="150"
+      style="margin-top: 200px">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Метод оплаты</th>
+            <th>Цена</th>
+            <th>Дата оплаты</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payment in Model)
+        {
+            <tr>
+                <td>@payment.PaymentMethod</td>
+                <td>@payment.Amount</td>
+                <td>@payment.PaymentDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<canvas id="paymentMethodChart" class="center-block" width="400" height="400"></canvas>
+</body>
+<script>
+    var ctx = document.getElementById('paymentMethodChart').getContext('2d');
+    var mostUsedPaymentMethod = '@ViewBag.MostUsedPaymentMethod';
+
+    var chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Самый частый метод оплаты', 'Остальные методы'],
+            datasets: [{
+                label: '@ViewBag.MostUsedPaymentMethod',
+                data: [2, 1], // Временные данные, мы заменим их далее
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false
+        }
+    });
+
+    // Заменяем временные данные на реальные
+    chart.data.datasets[0].data[0] = @ViewBag.MostUsedPaymentMethodCount;
+    chart.data.datasets[0].data[1] = @ViewBag.AnotherPaymentMethodCount;
+
+    chart.update();
+</script>

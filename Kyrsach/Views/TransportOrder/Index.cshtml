@@ -156,44 +156,101 @@
     </style>
 </head>
 
+<header id="header" class="float-panel" data-top="0" data-scroll="100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8">
+                <div class="logo">
+                    <a asp-controller="Home" asp-action="Index">
+                        <img src="~/kyrs/images/newLogo.png"
+                             alt="logo"
+                             style="width: 35%; height: 35%" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 main-menu">
+                <div class="menuBar jumplinks">
+                    <nav class="navbar navbar-default">
+                        <div class="navbar-header">
+                            <button type="button"
+                                    class="navbar-toggle collapsed"
+                                    data-toggle="collapse"
+                                    data-target="#bs-example-navbar-collapse-1"
+                                    aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+
+                        <div class="collapse navbar-collapse"
+                             id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a asp-controller="Home" asp-action="Index">Главная</a>
+                                </li>
+
+                                @if (Context.Session.GetString("UserName") == null)
+                                {
+                                    <li><a asp-controller="Account" asp-action="Login">Вход</a></li>
+                                    <li><a asp-controller="Account" asp-action="Register">Регистрация</a></li>
+                                }
+                                else
+                                {
+                                    <li><a>@Context.Session.GetString("UserName")</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
 
 <body id="mainBox"
       data-spy="scroll"
       data-target="#bs-example-navbar-collapse-1"
-      data-offset="150">
+      data-offset="150"
+      style="margin-top: 200px">
+
+    
+
     <h2 class="secTitle">Калькулятор</h2>
 
     <form asp-action="CalculatePrice" class="form" onsubmit="calculateDistance(event);; return false;">
         <div class="form-group">
-            <label asp-for="PickupLocation">Pickup Location:</label>
+            <label asp-for="PickupLocation">Место погрузки:</label>
             <input asp-for="PickupLocation" class="form-control" required />
         </div>
         <div class="form-group">
-            <label asp-for="DropoffLocation">Dropoff Location:</label>
+            <label asp-for="DropoffLocation">Место разгрузки:</label>
             <input asp-for="DropoffLocation" class="form-control" required />
         </div>
         <div class="form-group">
-            <label asp-for="OrderDate">Order Date:</label>
+            <label asp-for="OrderDate">Дата погрузки:</label>
             <input asp-for="OrderDate" type="date" class="form-control" required />
         </div>
         <div class="form-group">
-            <label asp-for="DeliveryDate">Delivery Date:</label>
+            <label asp-for="DeliveryDate">Дата разгрузки:</label>
             <input asp-for="DeliveryDate" type="date" class="form-control" required />
         </div>
         <div class="form-group">
-            <label asp-for="Description">Description:</label>
+            <label asp-for="Description">Описание:</label>
             <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
         </div>
         <div class="form-group">
-            <label asp-for="Weight">Weight:</label>
+            <label asp-for="Weight">Вес:</label>
             <input asp-for="Weight" class="form-control" required />
         </div>
         <div class="form-group">
-            <label asp-for="Volume">Volume:</label>
+            <label asp-for="Volume">Объем:</label>
             <input asp-for="Volume" class="form-control" required />
         </div>
         <div class="form-group">
-            <label asp-for="CargoTypeID">Cargo Type:</label>
+            <label asp-for="CargoTypeID">Тип груза:</label>
             <select asp-for="CargoTypeID" asp-items="Model.CargoTypes" class="form-control" required>
                 <option value="">Select Cargo Type</option>
             </select>
@@ -213,7 +270,7 @@
         {
             <form asp-action="CreateOrder" class="form">
                 <div class="form-group">
-                    <label for="paymentMethod">Payment Method:</label>
+                    <label for="paymentMethod">Метод оплаты:</label>
                     <select class="form-control" id="paymentMethod" name="paymentMethod">
                         <option value="creditCard">Credit Card</option>
                         <option value="paypal">PayPal</option>
@@ -224,7 +281,7 @@
                 <button type="submit" class="btn center btn-primary btn-success">Place Order</button>
             </form>
 
-            @if (ViewBag.Flaf == 1)
+            @if (ViewBag.Flag == 1)
             {
                 <div id="popup-container" class="popup-container">
                     <div class="popup-content">
@@ -250,7 +307,7 @@
         }
         else
         {
-            <p>Please <a asp-controller="Account" asp-action="Login">log in</a> to place an order.</p>
+            <p>Please <a asp-controller="Account" asp-action="Login">Авторизируйтесь</a> чтобы разместить заказ.</p>
         }
     }
 </body>
